@@ -121,10 +121,12 @@ function mostrarClima(datos) {
 
 
 const boton = document.querySelector('#dame_opis');
+const boton2 = document.querySelector('#dame_entregas');
 
 window.addEventListener('load', () => {
 
     boton.addEventListener('click', traerOpis);
+    boton2.addEventListener('click', traerEntregas);
 
 })
 
@@ -134,35 +136,73 @@ async function traerOpis() {
 
     let url = `http://localhost:9999/api/v1/pruebas`;
 
-    const rta = fetch(url)
+    const rta = await fetch(url)
       .then(respuesta => {
         //console.log(respuesta)
             return respuesta.json();
       })
-      .then(respuesta => {console.log(respuesta)
-            return respuesta
-        })
       .catch(error => {
         console.log(error)
+        console.error('Error en el llamado a la API')
       });
 
-      console.log(rta)
+      //console.log(rta)
 
       // ARMAMOS EL BODY
 
-      const row = document.querySelector('#tabla_opis')
+      rta.forEach(e => {
 
-      row.innerHTML = `
+        const row = document.querySelector('#tabla_opis')
+
+        row.innerHTML += `
         <tr>
-            <th>FIN DE TABLA</th>
-            <th>FIN DE TABLA</th>
-            <th>FIN DE TABLA</th>
-            <th>FIN DE TABLA</th>
-            <th>FIN DE TABLA</th>
-            <th>FIN DE TABLA</th>
+            <th>${e.nOrden}</th>
+            <th>${e.nPaciente}</th>
+            <th>${e.Obra_Social}</th>
+            <th>${e.Cliente}</th>
+            <th>${e.dFechaOrden}</th>
+            <th>${e.Observaciones}</th>
         </tr>
       `;
-      
+      });
+  }
+
+
+  async function traerEntregas() {
+
+    // TRAEMOS LOS DATOS
+
+    let url = `http://localhost:9999/api/v1/pruebas`;
+
+    const rta = await fetch(url)
+      .then(respuesta => {
+        //console.log(respuesta)
+            return respuesta.json();
+      })
+      .catch(error => {
+        console.log(error)
+        console.error('Error en el llamado a la API')
+      });
+
+      //console.log(rta)
+
+      // ARMAMOS EL BODY
+
+      rta.forEach(e => {
+
+        const row = document.querySelector('#tabla_opis')
+
+        row.innerHTML += `
+        <tr>
+            <th>${e.nOrden}</th>
+            <th>${e.nPaciente}</th>
+            <th>${e.Obra_Social}</th>
+            <th>${e.Cliente}</th>
+            <th>${e.dFechaOrden}</th>
+            <th>${e.Observaciones}</th>
+        </tr>
+      `;
+      });
   }
 
 
